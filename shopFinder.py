@@ -5,12 +5,15 @@ import re
 from bs4 import BeautifulSoup
 import time
 from listCleaner import process_master_list
+from map_search_log import generate_search_map
 
 # ----------------------
 # CONFIGURATION
 # ----------------------
-API_KEY = "AIzaSyDavZr62SbyNOKqmPIi0MnOjyGMYeI5EaM"  # Replace with your keyfrom listCleaner import process_master_list
+API_KEY = "AIzaSyDavZr62SbyNOKqmPIi0MnOjyGMYeI5EaM"  # Replace with your keyfrom listCleaner import process_master_listfrom map_search_log import generate_search_map
 
+
+SEARCH_LOG_FILE = "search_log.csv"
 PLACES_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json"
 MAX_MONTHLY_QUOTA = 10588
@@ -31,7 +34,43 @@ coordinates = [
     # ("New York City", "40.7128,-74.0060"),
     # ("Los Angeles", "34.0522,-118.2437"),
     ("Chicago", "41.8781,-87.6298"),
+    ("New Orleans", "29.9511,-90.0715")
 ]
+
+
+def has_already_searched(query, city, lat, lng, radius):
+    if not os.path.exists(SEARCH_LOG_FILE):
+        return False
+    with open(SEARCH_LOG_FILE, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if (
+                row["query"] == query and
+                row["city"] == city and
+                abs(float(row["lat"]) - float(lat)) < 0.0001 and
+                abs(float(row["lng"]) - float(lng)) < 0.0001 and
+                int(row["radius_m"]) == radius
+            ):
+                return True  # ✅ Confirmed: this exact search was already *completed* and logged
+    return False  # Otherwise, let it run again
+
+
+def log_search(query, city, lat, lng, radius):
+    file_exists = os.path.exists(SEARCH_LOG_FILE)
+    with open(SEARCH_LOG_FILE, mode="a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["query", "city", "lat", "lng", "radius_m", "date"])
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow({
+            "query": query,
+            "city": city,
+            "lat": lat,
+            "lng": lng,
+            "radius_m": radius,
+            "date": time.strftime("%Y-%m-%d")
+        })
+
+
 
 # ----------------------
 # USAGE TRACKING
@@ -126,18 +165,19 @@ def find_stores(query, location, city_label, radius=50000):
         if next_page_token:
             print(f"➡️ Next page token found: {next_page_token}")
             # Uncomment below to enable pagination (Google requires short wait)
-            # time.sleep(3)
-            # params = {
-            #     "pagetoken": next_page_token,
-            #     "key": API_KEY
-            # }
-            # page += 1
-            # continue
+            time.sleep(3)
+            params = {
+                "pagetoken": next_page_token,
+                "key": API_KEY
+            }
+            page += 1
+            continue
             break
         else:
             break
 
-    return all_stores
+    return all_stores, not bool(next_page_token)  # complete = True if no next page
+
 
 # ----------------------
 # SAVE TO CSV
@@ -167,20 +207,30 @@ def save_to_csv(stores, filename=OUTPUT_CSV):
 # ----------------------
 # MAIN LOGIC
 # ----------------------
-def run_search(query, location, city_label):
+def run_search(query, location, city_label, radius=30000):
+    lat, lng = map(float, location.split(","))
+    if has_already_searched(query, city_label, lat, lng, radius):
+        print(f"⏩ Already searched '{query}' near {city_label} ({lat}, {lng})")
+        return
+
     if not is_quota_available(1):
         print("🚫 Quota exceeded — skipping this query.")
         return
 
     print(f"\n🔎 Searching '{query}' near {city_label}")
-    stores = find_stores(query, location, city_label)
+    stores, complete = find_stores(query, location, city_label, radius)
 
     if stores:
         save_to_csv(stores)
         increment_usage(1)
-        print(f"✅ Saved {len(stores)} results to {OUTPUT_CSV}")
+        if complete:
+            log_search(query, city_label, lat, lng, radius)
+            print(f"✅ Finished and logged search for '{query}' near {city_label}")
+        else:
+            print(f"⚠️ Partial results only — not logging yet (next page likely exists)")
     else:
         print("No results found.")
+
 
 # ----------------------
 # RUN ALL COMBINATIONS
@@ -192,3 +242,6 @@ if __name__ == "__main__":
 
     print("\n✨ Running listCleaner after scrape...")
     process_master_list()
+
+    print("\n🗺️ Generating map of searched areas...")
+    generate_search_map()
