@@ -91,14 +91,16 @@ def process_master_list():
                 updated_with_emails.append(row)
                 moved_to_with += 1
             else:
-                print(f"⚠️ Duplicate skipped (with email): {row['name']} - {row['address']} - {row.get('city', '')}")
+                # Silently skip duplicates
+                pass
 
         else:
             if not is_duplicate(row, updated_without_emails):
                 updated_without_emails.append(row)
                 moved_to_without += 1
             else:
-                print(f"⚠️ Duplicate skipped (without email): {row['name']} - {row['address']} - {row.get('city', '')}")
+                # Silently skip duplicates
+                pass
 
 
         updated_master.append(row)
@@ -119,7 +121,7 @@ def process_master_list():
     print(f"📤 Moved {moved_to_with} entries to stores_with_emails.csv")
     print(f"📤 Moved {moved_to_without} entries to stores_without_email.csv")
     print(f"🚩 Flagged {newly_flagged} suspicious email(s)")
-    print(f"✅ Processing complete. All sorted entries marked.")
+    print("✅ Processing complete. All sorted entries marked.")
 
 def dedupe(rows):
     seen = set()

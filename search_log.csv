@@ -1,3 +1,129 @@
 query,city,lat,lng,radius_m,date
 tabletop game store,Chicago,41.8781,-87.6298,30000,2025-03-25
 tabletop game store,New Orleans,29.9511,-90.0715,30000,2025-03-26
+tabletop game store,Jacksonville,30.3322,-81.6749,30000,2025-03-26
+witch store,New York City,40.7128,-74.006,30000,2025-05-09
+witch store,New York City,40.7128,-74.006,50000,2025-05-09
+fantasy gift shop,Tampa,27.9506,-82.4572,50000,2025-05-09
+fantasy gift shop,St Augustine,29.9012,-81.3124,50000,2025-05-09
+fantasy gift shop,New Orleans,29.9511,-90.0715,50000,2025-05-09
+witch store,New Orleans,29.9511,-90.0715,50000,2025-05-09
+tabletop game store,New Orleans,29.9511,-90.0715,50000,2025-05-09
+fantasy gift shop,Beaufort,32.4316,-80.6698,50000,2025-05-09
+witch store,Salem,42.5195,-70.8967,50000,2025-05-09
+witch store,Portland,45.5155,-122.6789,50000,2025-05-09
+tabletop game store,Portland,45.5155,-122.6789,50000,2025-05-09
+fantasy gift shop,Portland,45.5155,-122.6789,50000,2025-05-09
+witch store,Los Angeles,34.0522,-118.2437,50000,2025-05-09
+tabletop game store,Los Angeles,34.0522,-118.2437,50000,2025-05-09
+fantasy gift shop,Los Angeles,34.0522,-118.2437,50000,2025-05-09
+tabletop game store,New York City,40.7128,-74.006,50000,2025-05-09
+fantasy gift shop,New York City,40.7128,-74.006,50000,2025-05-09
+witch store,Seattle,47.6062,-122.3321,50000,2025-05-09
+tabletop game store,Seattle,47.6062,-122.3321,50000,2025-05-09
+fantasy gift shop,Tampa,27.9506,-82.4572,30000,2025-05-09
+fantasy gift shop,St Augustine,29.9012,-81.3124,30000,2025-05-09
+fantasy gift shop,New Orleans,29.9511,-90.0715,30000,2025-05-09
+witch store,New Orleans,29.9511,-90.0715,30000,2025-05-09
+fantasy gift shop,Beaufort,32.4316,-80.6698,30000,2025-05-09
+witch store,Salem,42.5195,-70.8967,30000,2025-05-09
+witch store,Portland,45.5155,-122.6789,30000,2025-05-09
+tabletop game store,Portland,45.5155,-122.6789,30000,2025-05-09
+fantasy gift shop,Portland,45.5155,-122.6789,30000,2025-05-09
+witch store,Los Angeles,34.0522,-118.2437,30000,2025-05-09
+tabletop game store,Los Angeles,34.0522,-118.2437,30000,2025-05-09
+fantasy gift shop,Los Angeles,34.0522,-118.2437,30000,2025-05-09
+tabletop game store,New York City,40.7128,-74.006,30000,2025-05-09
+fantasy gift shop,New York City,40.7128,-74.006,30000,2025-05-09
+witch store,Seattle,47.6062,-122.3321,30000,2025-05-09
+tabletop game store,Seattle,47.6062,-122.3321,30000,2025-05-09
+fantasy gift shop,Seattle,47.6062,-122.3321,30000,2025-05-09
+tabletop game store,Orange County,33.7175,-117.8311,30000,2025-05-09
+tabletop game store,San Diego,32.7157,-117.1611,30000,2025-05-09
+tabletop game store,Austin,30.2672,-97.7431,30000,2025-05-09
+fantasy gift shop,Austin,30.2672,-97.7431,30000,2025-05-09
+tabletop game store,Houston,29.7604,-95.3698,30000,2025-05-09
+fantasy gift shop,Houston,29.7604,-95.3698,30000,2025-05-09
+fantasy gift shop,Atlanta,33.749,-84.388,30000,2025-05-09
+fantasy gift shop,Chicago,41.8781,-87.6298,30000,2025-05-09
+tabletop game store,Tampa,27.9506,-82.4572,50000,2025-05-10
+witch store,Tampa,27.9506,-82.4572,50000,2025-05-10
+tabletop game store,St Augustine,29.9012,-81.3124,50000,2025-05-10
+witch store,St Augustine,29.9012,-81.3124,50000,2025-05-10
+tabletop game store,Beaufort,32.4316,-80.6698,50000,2025-05-10
+witch store,Beaufort,32.4316,-80.6698,50000,2025-05-10
+fantasy gift shop,Salem,42.5195,-70.8967,20000,2025-05-10
+tabletop game store,Salem,42.5195,-70.8967,20000,2025-05-10
+witch store,Salem,42.5195,-70.8967,20000,2025-05-10
+fantasy gift shop,Salem,42.7895,-70.8967,20000,2025-05-10
+tabletop game store,Salem,42.7895,-70.8967,20000,2025-05-10
+witch store,Salem,42.7895,-70.8967,20000,2025-05-10
+fantasy gift shop,Salem,42.5195,-71.2967,20000,2025-05-10
+tabletop game store,Salem,42.5195,-71.2967,20000,2025-05-10
+witch store,Salem,42.5195,-71.2967,20000,2025-05-10
+fantasy gift shop,Salem,42.2495,-70.4967,20000,2025-05-10
+tabletop game store,Salem,42.2495,-70.4967,20000,2025-05-10
+witch store,Salem,42.2495,-70.4967,20000,2025-05-10
+witch store,Portland,45.5155,-122.6789,20000,2025-05-10
+tabletop game store,Portland,45.5155,-122.6789,20000,2025-05-10
+fantasy gift shop,Portland,45.5155,-122.6789,20000,2025-05-10
+witch store,Portland,45.7855,-122.6789,20000,2025-05-10
+tabletop game store,Portland,45.7855,-122.6789,20000,2025-05-10
+fantasy gift shop,Portland,45.7855,-122.6789,20000,2025-05-10
+witch store,Portland,45.5155,-123.0789,20000,2025-05-10
+tabletop game store,Portland,45.5155,-123.0789,20000,2025-05-10
+fantasy gift shop,Portland,45.5155,-123.0789,20000,2025-05-10
+witch store,Portland,45.2455,-121.8789,20000,2025-05-10
+tabletop game store,Portland,45.2455,-121.8789,20000,2025-05-10
+fantasy gift shop,Portland,45.2455,-121.8789,20000,2025-05-10
+witch store,Los Angeles,34.0522,-118.2437,20000,2025-05-10
+tabletop game store,Los Angeles,34.0522,-118.2437,20000,2025-05-10
+fantasy gift shop,Los Angeles,34.0522,-118.2437,20000,2025-05-10
+witch store,Los Angeles,34.3222,-118.2437,20000,2025-05-10
+tabletop game store,Los Angeles,34.3222,-118.2437,20000,2025-05-10
+fantasy gift shop,Los Angeles,34.3222,-118.2437,20000,2025-05-10
+witch store,Los Angeles,34.0522,-118.6437,20000,2025-05-10
+tabletop game store,Los Angeles,34.0522,-118.6437,20000,2025-05-10
+fantasy gift shop,Los Angeles,34.0522,-118.6437,20000,2025-05-10
+witch store,Los Angeles,33.7822,-117.8437,20000,2025-05-10
+tabletop game store,Los Angeles,33.7822,-117.8437,20000,2025-05-10
+fantasy gift shop,Los Angeles,33.7822,-117.8437,20000,2025-05-10
+witch store,New York City,40.7128,-74.006,20000,2025-05-10
+tabletop game store,New York City,40.7128,-74.006,20000,2025-05-10
+fantasy gift shop,New York City,40.7128,-74.006,20000,2025-05-10
+witch store,New York City,40.9828,-74.006,20000,2025-05-10
+tabletop game store,New York City,40.9828,-74.006,20000,2025-05-10
+fantasy gift shop,New York City,40.9828,-74.006,20000,2025-05-10
+witch store,New York City,40.7128,-74.406,20000,2025-05-10
+tabletop game store,New York City,40.7128,-74.406,20000,2025-05-10
+fantasy gift shop,New York City,40.7128,-74.406,20000,2025-05-10
+witch store,New York City,40.4428,-73.606,20000,2025-05-10
+tabletop game store,New York City,40.4428,-73.606,20000,2025-05-10
+fantasy gift shop,New York City,40.4428,-73.606,20000,2025-05-10
+witch store,Seattle,47.6062,-122.3321,20000,2025-05-10
+tabletop game store,Seattle,47.6062,-122.3321,20000,2025-05-10
+fantasy gift shop,Seattle,47.6062,-122.3321,20000,2025-05-10
+witch store,Seattle,47.8762,-122.3321,20000,2025-05-10
+tabletop game store,Seattle,47.8762,-122.3321,20000,2025-05-10
+fantasy gift shop,Seattle,47.8762,-122.3321,20000,2025-05-10
+witch store,Seattle,47.6062,-122.7321,20000,2025-05-10
+tabletop game store,Seattle,47.6062,-122.7321,20000,2025-05-10
+fantasy gift shop,Seattle,47.6062,-122.7321,20000,2025-05-10
+witch store,Seattle,47.3362,-121.9321,20000,2025-05-10
+tabletop game store,Seattle,47.3362,-121.9321,20000,2025-05-10
+fantasy gift shop,Seattle,47.3362,-121.9321,20000,2025-05-10
+fantasy gift shop,Orange County,33.7175,-117.8311,30000,2025-05-10
+witch store,Orange County,33.7175,-117.8311,30000,2025-05-10
+fantasy gift shop,San Diego,32.7157,-117.1611,30000,2025-05-10
+witch store,San Diego,32.7157,-117.1611,30000,2025-05-10
+tabletop game store,Austin,30.2672,-97.7431,20000,2025-05-10
+fantasy gift shop,Austin,30.2672,-97.7431,20000,2025-05-10
+tabletop game store,Austin,30.5372,-97.7431,20000,2025-05-10
+fantasy gift shop,Austin,30.5372,-97.7431,20000,2025-05-10
+tabletop game store,Austin,30.2672,-98.1431,20000,2025-05-10
+fantasy gift shop,Austin,30.2672,-98.1431,20000,2025-05-10
+tabletop game store,Austin,29.9972,-96.9431,20000,2025-05-10
+fantasy gift shop,Austin,29.9972,-96.9431,20000,2025-05-10
+tabletop game store,Atlanta,33.749,-84.388,30000,2025-05-10
+witch store,Atlanta,33.749,-84.388,30000,2025-05-10
+witch store,Chicago,41.8781,-87.6298,30000,2025-05-10
