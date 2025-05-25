@@ -1,6 +1,7 @@
 import csv
 import re
 import os
+from config import FILES
 
 
 # Known TLDs for email boundary
@@ -12,9 +13,9 @@ SUSPICIOUS_PREFIXES = [
 ]
 
 # File paths
-MASTER_FILE = "master_list.csv"
-WITH_EMAILS_FILE = "stores_with_emails.csv"
-WITHOUT_EMAILS_FILE = "stores_without_email.csv"
+MASTER_FILE = FILES["master_list"]
+WITH_EMAILS_FILE = FILES["with_emails"]
+WITHOUT_EMAILS_FILE = FILES["without_emails"]
 
 def clean_smart_emails(text):
     emails = re.findall(rf'\b[\w\.-]+@[\w\.-]+\.(?:{TLDs})\b', text, re.IGNORECASE)
@@ -66,7 +67,10 @@ def process_master_list():
     newly_flagged = 0
 
     for row in master_data:
-       
+        # Ensure all fields have at least empty string values
+        for field in master_fields:
+            if field not in row or row[field] is None:
+                row[field] = ""
 
         row["sorted"] = "true"
         email = row.get("email", "").strip()
@@ -106,11 +110,53 @@ def process_master_list():
         updated_master.append(row)
 
     # Ensure all fieldnames are preserved (original + added ones)
-  # Manually define desired column order
+    # Manually define desired column order
     fieldnames = [
-    "sorted", "query", "city", "name", "address", "website", "email", "flagged"
-]
+        "sorted", "query", "city", "location_id", "coordinates", "name", "address", "website", "email", "flagged"
+    ]
 
+    for row in master_data:
+        # Ensure all fields have at least empty string values
+        for field in fieldnames:
+            if field not in row or row[field] is None:
+                row[field] = ""
+
+        row["sorted"] = "true"
+        email = row.get("email", "").strip()
+
+        if email:
+            result = clean_smart_emails(email)
+            if result:
+                email_cleaned, flagged = result[0]
+                row["email"] = email_cleaned
+
+                if flagged:
+                    row["flagged"] = "true"
+                    newly_flagged += 1
+                else:
+                    row.pop("flagged", "")  # Remove the key if it exists
+            else:
+                row.pop("flagged", "")
+
+
+            if not is_duplicate(row, updated_with_emails):
+
+                updated_with_emails.append(row)
+                moved_to_with += 1
+            else:
+                # Silently skip duplicates
+                pass
+
+        else:
+            if not is_duplicate(row, updated_without_emails):
+                updated_without_emails.append(row)
+                moved_to_without += 1
+            else:
+                # Silently skip duplicates
+                pass
+
+
+        updated_master.append(row)
 
     # Save everything
     save_csv(MASTER_FILE, updated_master, fieldnames)
