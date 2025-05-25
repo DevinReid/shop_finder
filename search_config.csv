@@ -1,89 +1,44 @@
 Skip?,Status,city,lat,lng,radius,query
-No,,New York,40.7128,-74.0060,50000,witch store
-No,,New York,40.7128,-74.0060,50000,tabletop gaming store
-No,,New York,40.7128,-74.0060,50000,fantasy gift shop
-No,,Los Angeles,34.0522,-118.2437,50000,witch store
-No,,Los Angeles,34.0522,-118.2437,50000,tabletop gaming store
-No,,Los Angeles,34.0522,-118.2437,50000,fantasy gift shop
-No,,Chicago,41.8781,-87.6298,50000,witch store
-No,,Chicago,41.8781,-87.6298,50000,tabletop gaming store
-No,,Chicago,41.8781,-87.6298,50000,fantasy gift shop
-No,,Houston,29.7604,-95.3698,50000,witch store
-No,,Houston,29.7604,-95.3698,50000,tabletop gaming store
-No,,Houston,29.7604,-95.3698,50000,fantasy gift shop
-No,,Phoenix,33.4484,-112.0740,50000,witch store
-No,,Phoenix,33.4484,-112.0740,50000,tabletop gaming store
-No,,Phoenix,33.4484,-112.0740,50000,fantasy gift shop
-No,,Philadelphia,39.9526,-75.1652,50000,witch store
-No,,Philadelphia,39.9526,-75.1652,50000,tabletop gaming store
-No,,Philadelphia,39.9526,-75.1652,50000,fantasy gift shop
-No,,San Antonio,29.4241,-98.4936,50000,witch store
-No,,San Antonio,29.4241,-98.4936,50000,tabletop gaming store
-No,,San Antonio,29.4241,-98.4936,50000,fantasy gift shop
-No,,San Diego,32.7157,-117.1611,50000,witch store
-No,,San Diego,32.7157,-117.1611,50000,tabletop gaming store
-No,,San Diego,32.7157,-117.1611,50000,fantasy gift shop
-No,,Dallas,32.7767,-96.7970,50000,witch store
-No,,Dallas,32.7767,-96.7970,50000,tabletop gaming store
-No,,Dallas,32.7767,-96.7970,50000,fantasy gift shop
-No,,San Jose,37.3382,-121.8863,50000,witch store
-No,,San Jose,37.3382,-121.8863,50000,tabletop gaming store
-No,,San Jose,37.3382,-121.8863,50000,fantasy gift shop
-No,,Austin,30.2672,-97.7431,50000,witch store
-No,,Austin,30.2672,-97.7431,50000,tabletop gaming store
-No,,Austin,30.2672,-97.7431,50000,fantasy gift shop
-No,,Jacksonville,30.3322,-81.6557,50000,witch store
-No,,Jacksonville,30.3322,-81.6557,50000,tabletop gaming store
-No,,Jacksonville,30.3322,-81.6557,50000,fantasy gift shop
-No,,Fort Worth,32.7555,-97.3308,50000,witch store
-No,,Fort Worth,32.7555,-97.3308,50000,tabletop gaming store
-No,,Fort Worth,32.7555,-97.3308,50000,fantasy gift shop
-No,,Columbus,39.9612,-82.9988,50000,witch store
-No,,Columbus,39.9612,-82.9988,50000,tabletop gaming store
-No,,Columbus,39.9612,-82.9988,50000,fantasy gift shop
-No,,Charlotte,35.2271,-80.8431,50000,witch store
-No,,Charlotte,35.2271,-80.8431,50000,tabletop gaming store
-No,,Charlotte,35.2271,-80.8431,50000,fantasy gift shop
-No,,San Francisco,37.7749,-122.4194,50000,witch store
-No,,San Francisco,37.7749,-122.4194,50000,tabletop gaming store
-No,,San Francisco,37.7749,-122.4194,50000,fantasy gift shop
-No,,Indianapolis,39.7684,-86.1581,50000,witch store
-No,,Indianapolis,39.7684,-86.1581,50000,tabletop gaming store
-No,,Indianapolis,39.7684,-86.1581,50000,fantasy gift shop
-No,,Seattle,47.6062,-122.3321,50000,witch store
-No,,Seattle,47.6062,-122.3321,50000,tabletop gaming store
-No,,Seattle,47.6062,-122.3321,50000,fantasy gift shop
-No,,Denver,39.7392,-104.9903,50000,witch store
-No,,Denver,39.7392,-104.9903,50000,tabletop gaming store
-No,,Denver,39.7392,-104.9903,50000,fantasy gift shop
-No,,Washington,38.9072,-77.0369,50000,witch store
-No,,Washington,38.9072,-77.0369,50000,tabletop gaming store
-No,,Washington,38.9072,-77.0369,50000,fantasy gift shop
-Yes,✅,Austin,30.2672,-97.7431,50000,witch store
-Yes,🔄,Austin,30.2672,-97.7431,50000,tabletop gaming store
-Yes,✅,Austin,30.2672,-97.7431,50000,fantasy gift shop
-Yes,✅,Austin,30.2672,-97.48232735174525,25000,tabletop gaming store
-Yes,✅,Austin,30.462250766618116,-97.61271367587263,25000,tabletop gaming store
-Yes,✅,Austin,30.462250766618116,-97.87348632412737,25000,tabletop gaming store
-Yes,🔄,Austin,30.2672,-98.00387264825474,25000,tabletop gaming store
-No,❌,Austin,30.072149233381882,-97.87348632412737,30000,tabletop gaming store
-Yes,✅,Austin,30.072149233381882,-97.61271367587263,25000,tabletop gaming store
-No,⚠️,Austin,30.2672,-97.87870177709246,23000,tabletop gaming store
-Yes,🔄,Austin,30.370016920680555,-97.96519272186488,13000,tabletop gaming store
-No,❌,Austin,30.330744351599186,-98.10513801022574,18000,tabletop gaming store
-Yes,✅,Austin,30.20365564840081,-98.10513801022574,13000,tabletop gaming store
-Yes,✅,Austin,30.164383079319443,-97.96519272186488,13000,tabletop gaming store
-Yes,🔄,Austin,30.370016920680555,-97.96519272186488,13000,tabletop gaming store
-Yes,🔄,Austin,30.370016920680555,-97.89209971679676,6000,tabletop gaming store
-Yes,✅,Austin,30.424631135333627,-97.92864621933083,6000,tabletop gaming store
-No,⚠️,Austin,30.424631135333627,-98.00173922439893,11000,tabletop gaming store
-No,⚠️,Austin,30.370016920680555,-98.038285726933,11000,tabletop gaming store
-No,⚠️,Austin,30.315402706027484,-98.00173922439893,11000,tabletop gaming store
-No,⚠️,Austin,30.315402706027484,-97.92864621933083,11000,tabletop gaming store
-Yes,🔄,Austin,30.370016920680555,-97.89209971679676,6000,tabletop gaming store
-No,,Austin,30.370016920680555,-97.86077414319614,3000,tabletop gaming store
-No,,Austin,30.39342301267473,-97.87643692999646,3000,tabletop gaming store
-No,,Austin,30.39342301267473,-97.90776250359707,3000,tabletop gaming store
-No,,Austin,30.370016920680555,-97.92342529039739,3000,tabletop gaming store
-No,,Austin,30.34661082868638,-97.90776250359707,3000,tabletop gaming store
-No,,Austin,30.34661082868638,-97.87643692999646,3000,tabletop gaming store
+Yes,🔄,New York,40.7128,-74.0060,50000,Soap store
+Yes,🔄,New York,40.7128,-74.0060,50000,Boutique Cosmetics Store
+Yes,🔄,Los Angeles,34.0522,-118.2437,50000,Soap store
+Yes,🔄,Los Angeles,34.0522,-118.2437,50000,Boutique Cosmetics Store
+Yes,🔄,San Francisco,37.7749,-122.4194,50000,Soap store
+Yes,🔄,San Francisco,37.7749,-122.4194,50000,Boutique Cosmetics Store
+Yes,✅,Seattle,47.6062,-122.3321,50000,Soap store
+No,,New York,40.7128,-73.70886464176117,25000,Soap store
+No,,New York,40.90785076661812,-73.85743232088059,25000,Soap store
+No,,New York,40.90785076661812,-74.15456767911941,25000,Soap store
+No,,New York,40.7128,-74.30313535823883,25000,Soap store
+No,,New York,40.517749233381885,-74.15456767911941,25000,Soap store
+No,,New York,40.517749233381885,-73.85743232088059,25000,Soap store
+No,,New York,40.7128,-73.70886464176117,25000,Boutique Cosmetics Store
+No,,New York,40.90785076661812,-73.85743232088059,25000,Boutique Cosmetics Store
+No,,New York,40.90785076661812,-74.15456767911941,25000,Boutique Cosmetics Store
+No,,New York,40.7128,-74.30313535823883,25000,Boutique Cosmetics Store
+No,,New York,40.517749233381885,-74.15456767911941,25000,Boutique Cosmetics Store
+No,,New York,40.517749233381885,-73.85743232088059,25000,Boutique Cosmetics Store
+No,,Los Angeles,34.0522,-117.971862128549,25000,Soap store
+No,,Los Angeles,34.247250766618116,-118.1077810642745,25000,Soap store
+No,,Los Angeles,34.247250766618116,-118.3796189357255,25000,Soap store
+No,,Los Angeles,34.0522,-118.515537871451,25000,Soap store
+No,,Los Angeles,33.85714923338188,-118.3796189357255,25000,Soap store
+No,,Los Angeles,33.85714923338188,-118.1077810642745,25000,Soap store
+No,,Los Angeles,34.0522,-117.971862128549,25000,Boutique Cosmetics Store
+No,,Los Angeles,34.247250766618116,-118.1077810642745,25000,Boutique Cosmetics Store
+No,,Los Angeles,34.247250766618116,-118.3796189357255,25000,Boutique Cosmetics Store
+No,,Los Angeles,34.0522,-118.515537871451,25000,Boutique Cosmetics Store
+No,,Los Angeles,33.85714923338188,-118.3796189357255,25000,Boutique Cosmetics Store
+No,,Los Angeles,33.85714923338188,-118.1077810642745,25000,Boutique Cosmetics Store
+No,,San Francisco,37.7749,-122.13445750644331,25000,Soap store
+No,,San Francisco,37.96995076661812,-122.27692875322165,25000,Soap store
+No,,San Francisco,37.96995076661812,-122.56187124677834,25000,Soap store
+No,,San Francisco,37.7749,-122.70434249355668,25000,Soap store
+No,,San Francisco,37.579849233381886,-122.56187124677834,25000,Soap store
+No,,San Francisco,37.579849233381886,-122.27692875322165,25000,Soap store
+No,,San Francisco,37.7749,-122.13445750644331,25000,Boutique Cosmetics Store
+No,,San Francisco,37.96995076661812,-122.27692875322165,25000,Boutique Cosmetics Store
+No,,San Francisco,37.96995076661812,-122.56187124677834,25000,Boutique Cosmetics Store
+No,,San Francisco,37.7749,-122.70434249355668,25000,Boutique Cosmetics Store
+No,,San Francisco,37.579849233381886,-122.56187124677834,25000,Boutique Cosmetics Store
+No,,San Francisco,37.579849233381886,-122.27692875322165,25000,Boutique Cosmetics Store

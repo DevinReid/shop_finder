@@ -448,8 +448,8 @@ def update_search_config_skip(city, lat, lng, query):
         for row in reader:
             # Update Skip? to Yes if this is the matching search
             if (row["city"] == city and 
-                row["lat"] == str(lat) and 
-                row["lng"] == str(lng) and 
+                float(row["lat"]) == float(lat) and 
+                float(row["lng"]) == float(lng) and 
                 row["query"] == query):
                 row["Skip?"] = "Yes"
             rows.append(row)
@@ -507,8 +507,8 @@ def update_search_config_status(city, lat, lng, query, status, new_radius=None):
         for row in reader:
             # Update Status and radius if this is the matching search
             if (row["city"] == city and 
-                row["lat"] == str(lat) and 
-                row["lng"] == str(lng) and 
+                float(row["lat"]) == float(lat) and 
+                float(row["lng"]) == float(lng) and 
                 row["query"] == query):
                 row["Status"] = status
                 if new_radius is not None:
