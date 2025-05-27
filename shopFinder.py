@@ -301,6 +301,37 @@ def get_place_website(place_id):
 # ----------------------
 # GOOGLE PLACES SEARCH (1st page only, with pagination commented)
 # ----------------------
+def is_store_in_master_list(name, address, city):
+    """Check if a store already exists in the master list"""
+    if not os.path.exists(OUTPUT_CSV):
+        return False
+        
+    with open(OUTPUT_CSV, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if (row["name"].strip().lower() == name.strip().lower() and
+                row["address"].strip().lower() == address.strip().lower() and
+                row["city"].strip().lower() == city.strip().lower()):
+                return True
+    return False
+
+def load_excluded_retailers():
+    """Load the list of retailers to exclude from scraping"""
+    excluded_retailers = set()
+    try:
+        with open(FILES["excluded_retailers"], newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                excluded_retailers.add(row["retailer_name"].strip().lower())
+    except FileNotFoundError:
+        print("⚠️ Warning: excluded_retailers.csv not found. No retailers will be excluded.")
+    return excluded_retailers
+
+def is_excluded_retailer(name, excluded_retailers):
+    """Check if a store name matches any excluded retailer"""
+    name_lower = name.strip().lower()
+    return any(excluded.lower() in name_lower for excluded in excluded_retailers)
+
 def find_stores(query, location, city_label, radius=50000):
     params = {
         "query": query,
@@ -312,6 +343,12 @@ def find_stores(query, location, city_label, radius=50000):
     all_stores = []
     page = 1
     total_results = 0
+    skipped_scrapes = 0
+    excluded_count = 0
+    api_calls = 0  # Track API calls
+    
+    # Load excluded retailers
+    excluded_retailers = load_excluded_retailers()
     
     # Extract coordinates for location identifier
     lat, lng = map(float, location.split(","))
@@ -327,6 +364,7 @@ def find_stores(query, location, city_label, radius=50000):
                 time.sleep(5)
                 
             response = requests.get(PLACES_URL, params=params)
+            api_calls += 1  # Count Places API call
             data = response.json()
 
             if data.get("status") != "OK":
@@ -341,9 +379,22 @@ def find_stores(query, location, city_label, radius=50000):
                 address = r.get("formatted_address")
                 place_id = r.get("place_id")
 
+                # Skip excluded retailers
+                if is_excluded_retailer(name, excluded_retailers):
+                    print(f"⏩ Skipping excluded retailer: {name}")
+                    excluded_count += 1
+                    continue
+
+                # Check if we already have this store in our master list
+                if is_store_in_master_list(name, address, city_label):
+                    print(f"⏩ Skipping website scrape for {name} - already in master list")
+                    skipped_scrapes += 1
+                    continue
+
                 # Add delay between detail requests
                 time.sleep(2)
                 website = get_place_website(place_id)
+                api_calls += 1  # Count Details API call
                 email = extract_email_from_website(website) if website else ""
 
                 all_stores.append({
@@ -375,7 +426,12 @@ def find_stores(query, location, city_label, radius=50000):
             time.sleep(10)  # Increased retry delay
             continue
 
-    return all_stores, total_results
+    if skipped_scrapes > 0:
+        print(f"\n💰 Saved {skipped_scrapes} website scrapes by checking master list")
+    if excluded_count > 0:
+        print(f"\n🚫 Skipped {excluded_count} excluded retailers")
+    print(f"\n📊 API Calls made: {api_calls} (1 Places API + {api_calls - 1} Details API calls)")
+    return all_stores, total_results, api_calls
 
 
 # ----------------------
@@ -572,15 +628,15 @@ def run_search(query, location, city_label, radius=30000):
     # Check if we have an optimal radius saved for this specific query and location
     if is_optimal_radius_saved(city_label, location, query):
         print(f"\n⏩ Skipping '{query}' in {city_label} - optimal radius already saved")
-        return 0, 0, "skipped"
+        return 0, 0, "skipped", 0
 
     if not is_quota_available(1):
         print("🚫 Quota exceeded — skipping this query.")
-        return 0, 0, "quota_exceeded"
+        return 0, 0, "quota_exceeded", 0
 
     print(f"\n📍 Search Location: {city_label} ({lat:.4f}, {lng:.4f})")
     print(f"🔎 Searching '{query}' with radius {radius}m")
-    stores, total_results = find_stores(query, location, city_label, radius)
+    stores, total_results, api_calls = find_stores(query, location, city_label, radius)
 
     if stores:
         # Count how many new emails were added
@@ -628,10 +684,10 @@ def run_search(query, location, city_label, radius=30000):
         update_search_config_status(city_label, lat, lng, query, status, new_radius)
             
         print(f"{status} Found {total_results} results, {new_emails} with emails")
-        return total_results, new_emails, "completed"
+        return total_results, new_emails, "completed", api_calls
     else:
         print("No results found.")
-        return 0, 0, "no_results"
+        return 0, 0, "no_results", api_calls
 
 def add_search_to_config(city, lat, lng, radius, query):
     """Add a new search configuration to the search_config.csv file"""
@@ -706,6 +762,7 @@ if __name__ == "__main__":
     
     # Track results for each location/query combination
     search_results = {}
+    total_api_calls = 0
     
     for search in search_configs:
         location_id = f"{search['city']}_{search['coords']}"
@@ -714,18 +771,21 @@ if __name__ == "__main__":
                 "queries": {}
             }
         
-        total_results, new_emails, status = run_search(
+        total_results, new_emails, status, api_calls = run_search(
             search["query"],
             search["coords"],
             search["city"],
             search["radius"]
         )
         
+        total_api_calls += api_calls
+        
         search_results[location_id]["queries"][search["query"]] = {
             "total": total_results,
             "emails": new_emails,
             "status": status,
-            "radius": search["radius"]
+            "radius": search["radius"],
+            "api_calls": api_calls
         }
 
     print("\n✨ Running listCleaner after scrape...")
@@ -759,10 +819,16 @@ if __name__ == "__main__":
                 print(f"❌ {query}: No results found")
             elif counts["total"] >= 60:
                 print(f"❌ {query}: {counts['total']} results ({counts['emails']} with emails) - too many results, try smaller radius (current radius: {counts['radius']}m)")
+                print(f"   📊 API Calls: {counts['api_calls']} (1 Places API + {counts['api_calls'] - 1} Details API calls)")
             elif counts["total"] < 45 and counts["radius"] < 50000:
                 print(f"⚠️ {query}: {counts['total']} results ({counts['emails']} with emails) - could try larger radius (current radius: {counts['radius']}m)")
+                print(f"   📊 API Calls: {counts['api_calls']} (1 Places API + {counts['api_calls'] - 1} Details API calls)")
             else:
                 print(f"✅ {query}: {counts['total']} results ({counts['emails']} with emails) (radius: {counts['radius']}m)")
+                print(f"   📊 API Calls: {counts['api_calls']} (1 Places API + {counts['api_calls'] - 1} Details API calls)")
     
     print("\n" + "=" * 80)
+    print(f"\n📊 Total API Calls Made: {total_api_calls}")
+    print(f"   - Places API calls: {len(search_configs)}")
+    print(f"   - Details API calls: {total_api_calls - len(search_configs)}")
 
