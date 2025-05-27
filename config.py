@@ -4,7 +4,8 @@ FILES = {
     "usage_counter": "usage_counter.txt",
     "master_list": "saki_search/saki_master_list.csv",
     "with_emails": "saki_search/saki_stores_with_emails.csv",
-    "without_emails": "saki_search/saki_stores_without_emails.csv"
+    "without_emails": "saki_search/saki_stores_without_emails.csv",
+    "excluded_retailers": "saki_search/excluded_retailers.csv"
 } 
 
 # FILES = {
