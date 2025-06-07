@@ -4,15 +4,15 @@ import os
 import re
 from bs4 import BeautifulSoup
 import time
-from listCleaner import process_master_list
-from map_search_log import generate_search_map
-from config import FILES
-from search_subdivider import get_subdivision_centers, should_subdivide
+from shop_finder.Scripts.listCleaner import process_master_list
+from shop_finder.Scripts.map_search_log import generate_search_map
+from shop_finder.config import FILES
+from shop_finder.Scripts.search_subdivider import get_subdivision_centers, should_subdivide
 
 # ----------------------
 # CONFIGURATION
 # ----------------------
-API_KEY = "AIzaSyDavZr62SbyNOKqmPIi0MnOjyGMYeI5EaM"  # Replace with your key
+API_KEY = "AIzSyDavZr62SbyNOKqmPIi0MnOjyGMYeI5EaM"  # Replace with your key
 
 SEARCH_LOG_FILE = FILES["search_log"]
 PLACES_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
@@ -20,130 +20,14 @@ DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json"
 MAX_MONTHLY_QUOTA = 10588
 COUNTER_FILE = FILES["usage_counter"]
 OUTPUT_CSV = FILES["master_list"]
-SEARCH_CONFIG_FILE = "search_config.csv"
+SEARCH_CONFIG_FILE = FILES["search_config"]
+OPTIMAL_RADII_FILE = FILES["optimal_radii"]
 
 # Cost per API call (in USD)
 COST_PER_SEARCH = 0.017  # $0.017 per search
 COST_PER_DETAILS = 0.017  # $0.017 per place details
 
-# ----------------------
-# SEARCH QUERIES & LOCATIONS
-# ----------------------
-# city_searches = {
-#     # Fantasy/Pirate themed cities
-#     # "Tampa": {
-#     #     "locations": [
-#     #         {"coords": "27.9506,-82.4572", "radius": 50000}
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "tabletop game store", "witch store"]
-#     # },
-#     # "St Augustine": {
-#     #     "locations": [
-#     #         {"coords": "29.9012,-81.3124", "radius": 50000}
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "tabletop game store", "witch store"]
-#     # },
-#     # "New Orleans": {  # NOLA
-#     #     "locations": [
-#     #         {"coords": "29.9511,-90.0715", "radius": 50000}
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "witch store", "tabletop game store"]
-#     # },
-#     # "Beaufort": {
-#     #     "locations": [
-#     #         {"coords": "32.4316,-80.6698", "radius": 50000}
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "tabletop game store", "witch store"]
-#     # },
-    
-#     # # Witch store cities
-#     # "Salem": {
-#     #     "locations": [
-#     #         {"coords": "42.5195,-70.8967", "radius": 20000},  # Center point
-#     #         {"coords": "42.7895,-70.8967", "radius": 20000},  # North point (35km north)
-#     #         {"coords": "42.5195,-71.2967", "radius": 20000},  # East point (35km east)
-#     #         {"coords": "42.2495,-70.4967", "radius": 20000}   # Southwest point (35km southwest)
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "tabletop game store", "witch store"]
-#     # },
-#     # "Portland": {
-#     #     "locations": [
-#     #         {"coords": "45.5155,-122.6789", "radius": 20000},  # Downtown Portland
-#     #         {"coords": "45.7855,-122.6789", "radius": 20000},  # North point
-#     #         {"coords": "45.5155,-123.0789", "radius": 20000},  # East point
-#     #         {"coords": "45.2455,-121.8789", "radius": 20000}   # Southwest point
-#     #     ],
-#     #     "queries": ["witch store", "tabletop game store", "fantasy gift shop"]
-#     # },
-#     # "Los Angeles": {
-#     #     "locations": [
-#     #         {"coords": "34.0522,-118.2437", "radius": 20000},  # Downtown LA
-#     #         {"coords": "34.3222,-118.2437", "radius": 20000},  # North point
-#     #         {"coords": "34.0522,-118.6437", "radius": 20000},  # East point
-#     #         {"coords": "33.7822,-117.8437", "radius": 20000}   # Southwest point
-#     #     ],
-#     #     "queries": ["witch store", "tabletop game store", "fantasy gift shop"]
-#     # },
-#     # "New York City": {
-#     #     "locations": [
-#     #         {"coords": "40.7128,-74.0060", "radius": 20000},  # Manhattan
-#     #         {"coords": "40.9828,-74.0060", "radius": 20000},  # North point
-#     #         {"coords": "40.7128,-74.4060", "radius": 20000},  # East point
-#     #         {"coords": "40.4428,-73.6060", "radius": 20000}   # Southwest point
-#     #     ],
-#     #     "queries": ["witch store", "tabletop game store", "fantasy gift shop"]
-#     # },
-#     # "Seattle": {
-#     #     "locations": [
-#     #         {"coords": "47.6062,-122.3321", "radius": 20000},  # Downtown Seattle
-#     #         {"coords": "47.8762,-122.3321", "radius": 20000},  # North point
-#     #         {"coords": "47.6062,-122.7321", "radius": 20000},  # East point
-#     #         {"coords": "47.3362,-121.9321", "radius": 20000}   # Southwest point
-#     #     ],
-#     #     "queries": ["witch store", "tabletop game store", "fantasy gift shop"]
-#     # },
-    
-#     # # Tabletop game cities
-#     # "Orange County": {
-#     #     "locations": [
-#     #         {"coords": "33.7175,-117.8311", "radius": 30000}
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "tabletop game store", "witch store"]
-#     # },
-#     # "San Diego": {
-#     #     "locations": [
-#     #         {"coords": "32.7157,-117.1611", "radius": 30000}
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "tabletop game store", "witch store"]
-#     # },
-#     "Austin": {
-#         "locations": [
-#             {"coords": "30.2672,-97.7431", "radius": 20000},  # Downtown Austin
-#             {"coords": "30.5372,-97.7431", "radius": 20000},  # North point
-#             {"coords": "30.2672,-98.1431", "radius": 20000},  # East point
-#             {"coords": "29.9972,-96.9431", "radius": 20000}   # Southwest point
-#         ],
-#         "queries": [
-#             {"term": "tabletop game store", "radius": 20000},
-#             {"term": "fantasy gift shop", "radius": 20000},
-#             {"term": "witch store", "radius": 20000}
-#         ]
-#     },
-    
-#     # Fantasy cities (additional)yy
-#     # "Atlanta": {
-#     #     "locations": [
-#     #         {"coords": "33.7490,-84.3880", "radius": 30000}
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "tabletop game store", "witch store"]
-#     # },
-#     # "Chicago": {
-#     #     "locations": [
-#     #         {"coords": "41.8781,-87.6298", "radius": 30000}
-#     #     ],
-#     #     "queries": ["fantasy gift shop", "tabletop game store", "witch store"]
-#     # }
-# }
+
 def load_search_config():
     """Load search configurations from CSV file"""
     if not os.path.exists(SEARCH_CONFIG_FILE):
@@ -518,9 +402,9 @@ def update_search_config_skip(city, lat, lng, query):
 
 def save_optimal_radius(city, coords, query, radius, result_count):
     """Save successful search parameters to optimal_radii.csv"""
-    file_exists = os.path.exists("optimal_radii.csv")
+    file_exists = os.path.exists(OPTIMAL_RADII_FILE)
     lat, lng = map(float, coords.split(","))
-    with open("optimal_radii.csv", mode="a", newline="", encoding="utf-8") as f:
+    with open(OPTIMAL_RADII_FILE, mode="a", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=["query", "city", "lat", "lng", "radius"])
         if not file_exists:
             writer.writeheader()
@@ -537,10 +421,10 @@ def save_optimal_radius(city, coords, query, radius, result_count):
 
 def is_optimal_radius_saved(city, coords, query):
     """Check if we already have an optimal radius saved for this search"""
-    if not os.path.exists("optimal_radii.csv"):
+    if not os.path.exists(OPTIMAL_RADII_FILE):
         return False
     lat, lng = map(float, coords.split(","))
-    with open("optimal_radii.csv", newline="", encoding="utf-8") as f:
+    with open(OPTIMAL_RADII_FILE, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             if (row["city"] == city and 

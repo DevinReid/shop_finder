@@ -1,7 +1,7 @@
 import csv
 import re
 import os
-from config import FILES
+from shop_finder.config import FILES
 
 
 # Known TLDs for email boundary
@@ -88,43 +88,47 @@ def create_clean_retailer_files(with_emails, without_emails):
     for entries, output_file in files_to_process:
         kept_entries = []
         removed_count = 0
-        
-        # Get fieldnames and remove unwanted fields
-        fieldnames = [field for field in entries[0].keys() if field not in fields_to_remove]
-        
-        # Process each entry
-        for row in entries:
-            if is_excluded_retailer(row["name"], excluded_retailers):
-                removed_count += 1
-                continue
-            
-            # Create new row without unwanted fields
-            clean_row = {field: row[field] for field in fieldnames}
-            kept_entries.append(clean_row)
-        
-        # Sort entries by city
-        kept_entries.sort(key=lambda x: x["city"].lower())
-        
-        # Write output file
-        save_csv(output_file, kept_entries, fieldnames)
-        
-        # Count entries per city
-        city_counts = {}
-        for entry in kept_entries:
-            city = entry["city"]
-            city_counts[city] = city_counts.get(city, 0) + 1
-        
-        print(f"\n📊 Results for {output_file}:")
-        print(f"   - Removed {removed_count} excluded retailers")
-        print(f"   - Kept {len(kept_entries)} entries")
-        print(f"   - Removed fields: {', '.join(fields_to_remove)}")
-        print("\n   📍 Entries per city:")
-        for city, count in sorted(city_counts.items()):
-            print(f"      - {city}: {count}")
-        
-        total_removed += removed_count
-    
-    print(f"\n✨ Total retailers removed: {total_removed}")
+
+        # Only do this if entries exist!
+        if entries:
+            # Determine fieldnames
+            fieldnames = [field for field in entries[0].keys() if field not in fields_to_remove]
+
+            # Process each entry
+            for row in entries:
+                if is_excluded_retailer(row["name"], excluded_retailers):
+                    removed_count += 1
+                    continue
+
+                # Create new row without unwanted fields
+                clean_row = {field: row[field] for field in fieldnames}
+                kept_entries.append(clean_row)
+
+            # Sort entries by city
+            kept_entries.sort(key=lambda x: x["city"].lower())
+
+            # Write output file
+            save_csv(output_file, kept_entries, fieldnames)
+
+            # Count entries per city
+            city_counts = {}
+            for entry in kept_entries:
+                city = entry["city"]
+                city_counts[city] = city_counts.get(city, 0) + 1
+
+            print(f"\n📊 Results for {output_file}:")
+            print(f"   - Removed {removed_count} excluded retailers")
+            print(f"   - Kept {len(kept_entries)} entries")
+            print(f"   - Removed fields: {', '.join(fields_to_remove)}")
+            print("\n   📍 Entries per city:")
+            for city, count in sorted(city_counts.items()):
+                print(f"      - {city}: {count}")
+
+            total_removed += removed_count
+
+        else:
+            print(f"⚠️ No data rows in {output_file}. Skipping processing.")
+
 
 def process_master_list():
     master_data, master_fields = load_csv(MASTER_FILE)
