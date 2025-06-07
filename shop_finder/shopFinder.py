@@ -12,7 +12,7 @@ from shop_finder.Scripts.search_subdivider import get_subdivision_centers, shoul
 # ----------------------
 # CONFIGURATION
 # ----------------------
-API_KEY = "AIzSyDavZr62SbyNOKqmPIi0MnOjyGMYeI5EaM"  # Replace with your key
+API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
 
 SEARCH_LOG_FILE = FILES["search_log"]
 PLACES_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
