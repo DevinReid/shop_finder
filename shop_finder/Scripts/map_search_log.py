@@ -1,9 +1,10 @@
 # map_search_log.py
 import folium
 import csv
+from shop_finder.config import FILES
 from collections import defaultdict
 
-def generate_search_map(log_file="search_log.csv", output_file="search_map.html"):
+def generate_search_map(log_file=FILES["search_log"], output_file="search_map.html"):
     # Set up base map
     m = folium.Map(location=[39.8283, -98.5795], zoom_start=5)
     query_layers = defaultdict(lambda: folium.FeatureGroup(name="unknown", show=True))
