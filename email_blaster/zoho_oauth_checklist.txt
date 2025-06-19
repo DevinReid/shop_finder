@@ -1,0 +1,84 @@
+Zoho Mail API OAuth Setup - Checklist & Guide
+============================================
+
+Goal:
+-----
+Set up automated email sending using Zoho Mail API for the Email Blaster system. This requires obtaining the correct API credentials and a refresh token that allows the script to send emails on your behalf.
+
+What We're Trying To Do:
+------------------------
+- Register an application with Zoho (in the API Console)
+- Get the necessary credentials (Client ID, Client Secret)
+- Obtain a refresh token (permanent) that allows the script to get new access tokens and send emails automatically
+
+What You Need To Get This Working:
+----------------------------------
+1. **Zoho Account** (with access to Zoho Mail)
+2. **Registered Application** in Zoho API Console (https://api-console.zoho.com/)
+   - Usually as a "Self Client" for personal/automation use
+3. **Client ID** (from your app in the console)
+4. **Client Secret** (from your app in the console)
+5. **Refresh Token** (this is the tricky part!)
+   - This is what allows your script to send emails without manual login
+
+What To Look For In Zoho Console:
+---------------------------------
+- Application type: **Self Client** (for personal/automation use)
+- Tabs or sections for:
+  - "Generate Code" (lets you create a temporary code for a specific scope)
+  - "Client Secret" (shows your Client ID and Client Secret)
+- You may NOT see a place to set a Redirect URI for Self Client (that's normal)
+- You may NOT see a "Generate Refresh Token" button (for Self Client, you use the code in a POST request)
+
+How To Get The Refresh Token (for Self Client):
+-----------------------------------------------
+1. Go to your app in Zoho API Console
+2. In the "Generate Code" tab:
+   - Scope: `ZohoMail.messages.CREATE offline_access`
+   - Time Duration: 10 minutes (gives you time to use the code)
+   - Scope Description: `Send emails via API`
+   - Click **Create** to get a code (authorization code)
+3. Use that code in a POST request to:
+   - `https://accounts.zoho.com/oauth/v2/token`
+   - With parameters:
+     - `grant_type=authorization_code`
+     - `client_id=YOUR_CLIENT_ID`
+     - `client_secret=YOUR_CLIENT_SECRET`
+     - `code=THE_CODE_YOU_JUST_GOT`
+4. The response will include your **refresh token** (save this securely!)
+
+Example cURL Command:
+---------------------
+curl --request POST \
+  --url 'https://accounts.zoho.com/oauth/v2/token' \
+  --data 'grant_type=authorization_code' \
+  --data 'client_id=YOUR_CLIENT_ID' \
+  --data 'client_secret=YOUR_CLIENT_SECRET' \
+  --data 'code=THE_CODE_YOU_JUST_GOT'
+
+What To Save For The Email Blaster:
+-----------------------------------
+- Client ID
+- Client Secret
+- Refresh Token
+
+Put these in your `.env` file like this:
+----------------------------------------
+ZOHO_CLIENT_ID=your_client_id_here
+ZOHO_CLIENT_SECRET=your_client_secret_here
+ZOHO_REFRESH_TOKEN=your_refresh_token_here
+ZOHO_EMAIL=your_zoho_email@yourdomain.com
+
+Troubleshooting:
+----------------
+- If you see "Invalid Redirect URI" for Self Client, you may be using the wrong OAuth flow (Self Client does NOT use redirect URIs)
+- If you can't find the refresh token, make sure you're using the code from the "Generate Code" tab in a POST request as shown above
+- The refresh token is permanent; you only need to do this once
+
+Summary:
+--------
+- Register app in Zoho API Console
+- Get Client ID and Client Secret
+- Generate a code for the right scope
+- Exchange that code for a refresh token using a POST request
+- Save all three in your .env file for the Email Blaster system 
