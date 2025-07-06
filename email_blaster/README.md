@@ -210,3 +210,10 @@ For issues or questions:
 2. Test the setup with `python email_blaster.py test`
 3. Verify your Zoho API credentials are correct
 4. Ensure the CSV file path and format are correct 
+
+
+sorted,query,city,location_id,coordinates,name,address,website,email,flagged
+,tabletop game store,,,,"Test-Tabletop Game Store",123 Main St,Anytown,fenclawandfaund@gmail.com,
+,witch store,,,,"Test-Witch Store",456 Main St,Anytown,fenclawandfaund@gmail.com,
+,edge case games,,,,"Test-Edge Case Games",101 Main St,Anytown,fenclawandfaund@gmail.com,
+,fantasy gift shop,,,,"Test-Fantasy Gift Shop",789 Main St,Anytown,fenclawandfaund@gmail.com,

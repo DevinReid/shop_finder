@@ -157,6 +157,17 @@ class EmailBlaster:
             else:
                 print("Invalid choice. Please try again.")
 
+    def send_test_email(self, to_email):
+        """Send a test email to a specified address"""
+        subject = "Test Email from Email Blaster"
+        body = "<p>This is a test email sent from the Email Blaster system. If you received this, your Zoho Mail API is working!<br><br>Best,<br>Email Blaster</p>"
+        print(f"Sending test email to {to_email}...")
+        success, message = self.mailer.send_email(to_email, subject, body, store_name="Test Recipient")
+        if success:
+            print(f"✓ Test email sent to {to_email}")
+        else:
+            print(f"✗ Failed to send test email: {message}")
+
 def main():
     """Main function"""
     blaster = EmailBlaster()
@@ -177,8 +188,14 @@ def main():
             print("Campaign Statistics:")
             for key, value in stats.items():
                 print(f"  {key.replace('_', ' ').title()}: {value}")
+        elif command == 'send_test':
+            if len(sys.argv) > 2:
+                to_email = sys.argv[2]
+                blaster.send_test_email(to_email)
+            else:
+                print("Usage: python email_blaster.py send_test your@email.com")
         else:
-            print("Usage: python email_blaster.py [test|preview|send|stats] [limit]")
+            print("Usage: python email_blaster.py [test|preview|send|stats|send_test] [limit|email]")
             print("Or run without arguments for interactive mode")
     else:
         blaster.run_interactive()

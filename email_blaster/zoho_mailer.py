@@ -30,10 +30,11 @@ class ZohoMailer:
             response = requests.post(url, data=data)
             response.raise_for_status()
             token_data = response.json()
-            
+            if 'access_token' not in token_data:
+                print(f"Error: 'access_token' not in response: {token_data}")
+                return None
             self.access_token = token_data['access_token']
             self.token_expiry = time.time() + token_data['expires_in'] - 300  # 5 min buffer
-            
             return self.access_token
             
         except requests.exceptions.RequestException as e:
@@ -45,13 +46,32 @@ class ZohoMailer:
         access_token = self.get_access_token()
         if not access_token:
             return False, "Failed to get access token"
-        
-        url = "https://mail.zoho.com/api/accounts/self/messages"
+
+        # Get the user's accountId (same logic as test_connection)
+        accounts_url = "https://mail.zoho.com/api/accounts"
         headers = {
             'Authorization': f'Zoho-oauthtoken {access_token}',
             'Content-Type': 'application/json'
         }
-        
+        try:
+            response = requests.get(accounts_url, headers=headers)
+            response.raise_for_status()
+            accounts_data = response.json()
+            account_id = None
+            if 'data' in accounts_data:
+                for acc in accounts_data['data']:
+                    if acc.get('primaryEmailAddress', '').lower() == self.email.lower():
+                        account_id = acc.get('accountId')
+                        break
+                if not account_id and accounts_data['data']:
+                    account_id = accounts_data['data'][0].get('accountId')
+            if not account_id:
+                return False, "Could not find accountId for the configured email."
+        except requests.exceptions.RequestException as e:
+            return False, f"Failed to fetch accounts: {e}"
+
+        url = f"https://mail.zoho.com/api/accounts/{account_id}/messages"
+
         # Prepare email data
         email_data = {
             "fromAddress": self.email,
@@ -60,15 +80,12 @@ class ZohoMailer:
             "content": body,
             "mailFormat": "html"
         }
-        
         try:
             response = requests.post(url, headers=headers, json=email_data)
             response.raise_for_status()
-            
             # Log successful email
             self.log_email(to_email, subject, store_name, "SUCCESS")
             return True, "Email sent successfully"
-            
         except requests.exceptions.RequestException as e:
             error_msg = f"Failed to send email: {e}"
             self.log_email(to_email, subject, store_name, f"FAILED: {error_msg}")
@@ -91,12 +108,33 @@ class ZohoMailer:
         access_token = self.get_access_token()
         if not access_token:
             return False, "Failed to get access token"
-        
-        url = "https://mail.zoho.com/api/accounts/self"
+
+        # Step 1: Get the user's accountId
+        accounts_url = "https://mail.zoho.com/api/accounts"
         headers = {
             'Authorization': f'Zoho-oauthtoken {access_token}'
         }
-        
+        try:
+            response = requests.get(accounts_url, headers=headers)
+            response.raise_for_status()
+            accounts_data = response.json()
+            # Find the accountId for the primary email
+            account_id = None
+            if 'data' in accounts_data:
+                for acc in accounts_data['data']:
+                    if acc.get('primaryEmailAddress', '').lower() == self.email.lower():
+                        account_id = acc.get('accountId')
+                        break
+                if not account_id and accounts_data['data']:
+                    # Fallback: use the first accountId
+                    account_id = accounts_data['data'][0].get('accountId')
+            if not account_id:
+                return False, "Could not find accountId for the configured email."
+        except requests.exceptions.RequestException as e:
+            return False, f"Failed to fetch accounts: {e}"
+
+        # Step 2: Test the account details endpoint
+        url = f"https://mail.zoho.com/api/accounts/{account_id}"
         try:
             response = requests.get(url, headers=headers)
             response.raise_for_status()
