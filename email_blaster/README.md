@@ -217,3 +217,15 @@ sorted,query,city,location_id,coordinates,name,address,website,email,flagged
 ,witch store,,,,"Test-Witch Store",456 Main St,Anytown,fenclawandfaund@gmail.com,
 ,edge case games,,,,"Test-Edge Case Games",101 Main St,Anytown,fenclawandfaund@gmail.com,
 ,fantasy gift shop,,,,"Test-Fantasy Gift Shop",789 Main St,Anytown,fenclawandfaund@gmail.com,
+
+
+1. Add video link
+2. Format and Test all templates
+3. Create other linesheet types
+4. Edit line sheet pricing
+5. add different links for each line sheet type
+6. Start cleaning up email list
+7. add some kind of flag to note if something has been emailed or not
+8. set up cron job + jogging
+9. start testing
+
