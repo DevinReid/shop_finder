@@ -3,7 +3,7 @@ services:
     name: email-blaster-daily
     env: python
     schedule: "0 9 * * *"  # Daily at 9:00 AM UTC
-    buildCommand: cd email_blaster && pip install -r requirements.txt
+    buildCommand: pip install -r email_blaster/requirements.txt
     startCommand: cd email_blaster && python email_blaster.py send 5
     envVars:
       - key: ZOHO_CLIENT_ID
