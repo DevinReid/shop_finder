@@ -1,0 +1,18 @@
+services:
+  - type: cron
+    name: email-blaster-daily
+    env: python
+    schedule: "0 9 * * *"  # Daily at 9:00 AM UTC
+    buildCommand: pip install -r requirements.txt
+    startCommand: python email_blaster.py send 5
+    envVars:
+      - key: ZOHO_CLIENT_ID
+        sync: false
+      - key: ZOHO_CLIENT_SECRET
+        sync: false
+      - key: ZOHO_REFRESH_TOKEN
+        sync: false
+      - key: ZOHO_EMAIL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false 
