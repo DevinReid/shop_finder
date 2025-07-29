@@ -46,7 +46,7 @@ class ZohoMailer:
         access_token = self.get_access_token()
         if not access_token:
             return False, "Failed to get access token"
-
+        
         # Get the user's accountId (same logic as test_connection)
         accounts_url = "https://mail.zoho.com/api/accounts"
         headers = {
@@ -71,7 +71,7 @@ class ZohoMailer:
             return False, f"Failed to fetch accounts: {e}"
 
         url = f"https://mail.zoho.com/api/accounts/{account_id}/messages"
-
+        
         # Prepare email data
         email_data = {
             "fromAddress": self.email,
@@ -108,7 +108,7 @@ class ZohoMailer:
         access_token = self.get_access_token()
         if not access_token:
             return False, "Failed to get access token"
-
+        
         # Step 1: Get the user's accountId
         accounts_url = "https://mail.zoho.com/api/accounts"
         headers = {

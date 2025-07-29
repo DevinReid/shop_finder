@@ -26,21 +26,29 @@ class StoreProcessor:
         try:
             df = pd.read_csv(self.csv_file_path)
             
+            # Determine which email column to use
+            email_col = 'cleaned_email' if 'cleaned_email' in df.columns else 'email'
+            
             # Filter out stores that have already been emailed
-            df = df[~df['email'].isin(self.sent_emails)]
+            df = df[~df[email_col].isin(self.sent_emails)]
             
             # Filter out stores with invalid emails
-            df = df[df['email'].notna() & (df['email'] != '')]
+            df = df[df[email_col].notna() & (df[email_col] != '')]
             
             # Filter out stores with obvious invalid emails
-            df = df[~df['email'].str.contains('filler@godaddy.com', na=False)]
-            df = df[~df['email'].str.contains('example.com', na=False)]
+            df = df[~df[email_col].str.contains('filler@godaddy.com', na=False)]
+            df = df[~df[email_col].str.contains('example.com', na=False)]
             
-            # Clean up email addresses (remove extra text that might be in the email field)
-            df['email'] = df['email'].str.extract(r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})')
+            # If using original email column, clean up email addresses (remove extra text)
+            if email_col == 'email':
+                df[email_col] = df[email_col].str.extract(r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})')
             
-            # Remove rows where email extraction failed
-            df = df[df['email'].notna()]
+            # Remove rows where email is missing after processing
+            df = df[df[email_col].notna()]
+            
+            # Ensure there's always an 'email' column for the rest of the system
+            if email_col == 'cleaned_email':
+                df['email'] = df['cleaned_email']
             
             return df.to_dict('records')
             

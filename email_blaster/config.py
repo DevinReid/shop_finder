@@ -17,8 +17,8 @@ EMAIL_SUBJECT_PREFIX = "Wholesale Partnership Inquiry - "
 
 # File Paths
 TEST_CSV_FILE_PATH = "../fenclaw_search/Test_email_blaster.csv"
-CSV_FILE_PATH = TEST_CSV_FILE_PATH
-# CSV_FILE_PATH = "../fenclaw_search/stores_with_emails.csv"
+CSV_FILE_PATH = "C:/Users/Dreid/Desktop/Brain/Projects/shop_finder/email_blaster/cleaned_stores_with_emails.csv"
+
 SENT_EMAILS_LOG = "sent_emails.log"
 FAILED_EMAILS_LOG = "failed_emails.log"
 
@@ -34,6 +34,7 @@ EMAIL_TEMPLATES = {
 <p>Let us know your thoughts ~ we're happy to <strong>answer any questions you have</strong> and we can work with you on pricing depending on what you'd like to order ✨</p>
 <p>Cheers,<br>Tessla<br>Portal Keeper, Fenclaw & Faund</p>
 <p><strong>Linesheet:</strong> <a href="https://docs.google.com/presentation/d/1m9QdJ4AJPLAt5E1L1dPNr9R8q4ZYM2k0N54EVqZr0rE/edit?usp=sharing" target="_blank">View & Download Here</a></p>
+<p><strong>Spell Book Video Demo:</strong> <a href="https://youtube.com/shorts/zdgHhfXKCWI" target="_blank">Learn How to Use the Spell Book</a></p>
 """
     },
     
@@ -47,6 +48,7 @@ EMAIL_TEMPLATES = {
 <p>Let us know your thoughts ~ we're happy to <strong>answer any questions you have</strong> and we can work with you on pricing depending on what you'd like to order ✨</p>
 <p>Cheers,<br>Tessla<br>Portal Keeper, Fenclaw & Faund</p>
 <p><strong>Linesheet:</strong> <a href="https://docs.google.com/presentation/d/1m9QdJ4AJPLAt5E1L1dPNr9R8q4ZYM2k0N54EVqZr0rE/edit?usp=sharing" target="_blank">View & Download Here</a></p>
+<p><strong>Spell Book Video Demo:</strong> <a href="https://youtube.com/shorts/zdgHhfXKCWI" target="_blank">Learn How to Use the Spell Book</a></p>
 """
     },
     
@@ -60,6 +62,7 @@ EMAIL_TEMPLATES = {
 <p>Let us know your thoughts ~ we're happy to <strong>answer any questions you have</strong> and we can work with you on pricing depending on what you'd like to order ✨</p>
 <p>Cheers,<br>Tessla<br>Portal Keeper, Fenclaw & Faund</p>
 <p><strong>Linesheet:</strong> <a href="https://docs.google.com/presentation/d/1m9QdJ4AJPLAt5E1L1dPNr9R8q4ZYM2k0N54EVqZr0rE/edit?usp=sharing" target="_blank">View & Download Here</a></p>
+<p><strong>Spell Book Video Demo:</strong> <a href="https://youtube.com/shorts/zdgHhfXKCWI" target="_blank">Learn How to Use the Spell Book</a></p>
 """
     }
 }
