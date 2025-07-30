@@ -17,7 +17,7 @@ EMAIL_SUBJECT_PREFIX = "Wholesale Partnership Inquiry - "
 
 # File Paths
 TEST_CSV_FILE_PATH = "../fenclaw_search/Test_email_blaster.csv"
-CSV_FILE_PATH = "C:/Users/Dreid/Desktop/Brain/Projects/shop_finder/email_blaster/cleaned_stores_with_emails.csv"
+CSV_FILE_PATH = "cleaned_stores_with_emails.csv"  # Relative path for both local and Render
 
 SENT_EMAILS_LOG = "sent_emails.log"
 FAILED_EMAILS_LOG = "failed_emails.log"
