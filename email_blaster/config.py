@@ -17,7 +17,7 @@ EMAIL_SUBJECT_PREFIX = "Wholesale Partnership Inquiry - "
 
 # File Paths
 TEST_CSV_FILE_PATH = "Test_email_blaster.csv"
-CSV_FILE_PATH = TEST_CSV_FILE_PATH  # Relative path for both local and Render  "cleaned_stores_with_emails.csv" 
+CSV_FILE_PATH = "cleaned_stores_with_emails.csv"   # Relative path for both local and Render  "cleaned_stores_with_emails.csv" 
 
 SENT_EMAILS_LOG = "sent_emails.log"
 FAILED_EMAILS_LOG = "failed_emails.log"
