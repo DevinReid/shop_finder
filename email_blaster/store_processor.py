@@ -1,9 +1,8 @@
-import csv
 import pandas as pd
 import json
 import os
 from datetime import datetime
-from config import *
+from config import CSV_FILE_PATH, DAILY_EMAIL_LIMIT, EMAIL_TEMPLATES, DEFAULT_TEMPLATE, SENT_EMAILS_LOG
 from github_persistence import GitHubPersistence
 
 class StoreProcessor:

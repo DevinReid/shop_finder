@@ -1,8 +1,8 @@
 import requests
-import json
+
 import time
 from datetime import datetime
-from config import *
+from config import ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN, ZOHO_EMAIL, SENT_EMAILS_LOG, FAILED_EMAILS_LOG
 
 class ZohoMailer:
     def __init__(self):
