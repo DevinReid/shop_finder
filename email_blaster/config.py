@@ -16,7 +16,7 @@ DAILY_EMAIL_LIMIT = 5
 EMAIL_SUBJECT_PREFIX = "Wholesale Partnership Inquiry - "
 
 # File Paths
-TEST_CSV_FILE_PATH = "email_blaster/Test_email_blaster.csv"
+TEST_CSV_FILE_PATH = "Test_email_blaster.csv"
 CSV_FILE_PATH = TEST_CSV_FILE_PATH  # Relative path for both local and Render  "cleaned_stores_with_emails.csv" 
 
 SENT_EMAILS_LOG = "sent_emails.log"
