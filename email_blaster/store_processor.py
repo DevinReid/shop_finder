@@ -4,25 +4,41 @@ import json
 import os
 from datetime import datetime
 from config import *
+from github_persistence import GitHubPersistence
 
 class StoreProcessor:
     def __init__(self, csv_file_path=CSV_FILE_PATH):
         self.csv_file_path = csv_file_path
+        self.github_persistence = GitHubPersistence()
         self.sent_emails = self.load_sent_emails()
         
     def load_sent_emails(self):
         """Load list of emails that have already been sent to avoid duplicates"""
         sent_emails = set()
         try:
-            # Try to load from JSON file (more persistent)
+            # First try to load from GitHub (most up-to-date)
+            github_data = self.github_persistence.load_from_github()
+            
+            # Load from local JSON file
+            local_emails = set()
             json_file = "sent_emails.json"
             if os.path.exists(json_file):
                 with open(json_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
-                    sent_emails = set(data.get('sent_emails', []))
-                    print(f"✓ Loaded {len(sent_emails)} sent emails from JSON")
+                    local_emails = set(data.get('sent_emails', []))
+                    print(f"✓ Loaded {len(local_emails)} sent emails from local JSON")
+            
+            # Merge GitHub and local data
+            if github_data:
+                github_emails = set(github_data.get('sent_emails', []))
+                sent_emails = local_emails.union(github_emails)
+                print(f"📊 Merged emails: Local={len(local_emails)}, GitHub={len(github_emails)}, Total={len(sent_emails)}")
             else:
-                # Fallback to log file if JSON doesn't exist
+                sent_emails = local_emails
+                print(f"✓ Using local emails only: {len(sent_emails)}")
+            
+            # Fallback to log file if no JSON data
+            if not sent_emails:
                 try:
                     with open(SENT_EMAILS_LOG, 'r', encoding='utf-8') as f:
                         for line in f:
@@ -31,21 +47,28 @@ class StoreProcessor:
                                 sent_emails.add(parts[1])  # email address
                     print(f"✓ Loaded {len(sent_emails)} sent emails from log file")
                 except FileNotFoundError:
-                    print("✓ No sent emails log found, starting fresh")
+                    print("✓ No sent emails found, starting fresh")
         except Exception as e:
             print(f"⚠️ Error loading sent emails: {e}")
         return sent_emails
     
     def save_sent_emails(self):
-        """Save sent emails to JSON file for persistence"""
+        """Save sent emails to both local JSON and GitHub for persistence"""
         try:
-            json_file = "sent_emails.json"
+            # Prepare data
             data = {
                 'sent_emails': list(self.sent_emails),
                 'last_updated': datetime.now().isoformat()
             }
+            
+            # Save to local JSON file
+            json_file = "sent_emails.json"
             with open(json_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2)
+            
+            # Save to GitHub for persistence across Render runs
+            self.github_persistence.save_to_github(data)
+            
         except Exception as e:
             print(f"⚠️ Error saving sent emails: {e}")
     
