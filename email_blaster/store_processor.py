@@ -1,5 +1,7 @@
 import csv
 import pandas as pd
+import json
+import os
 from datetime import datetime
 from config import *
 
@@ -12,44 +14,85 @@ class StoreProcessor:
         """Load list of emails that have already been sent to avoid duplicates"""
         sent_emails = set()
         try:
-            with open(SENT_EMAILS_LOG, 'r', encoding='utf-8') as f:
-                for line in f:
-                    parts = line.strip().split(' | ')
-                    if len(parts) >= 2:
-                        sent_emails.add(parts[1])  # email address
-        except FileNotFoundError:
-            pass
+            # Try to load from JSON file (more persistent)
+            json_file = "sent_emails.json"
+            if os.path.exists(json_file):
+                with open(json_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    sent_emails = set(data.get('sent_emails', []))
+                    print(f"✓ Loaded {len(sent_emails)} sent emails from JSON")
+            else:
+                # Fallback to log file if JSON doesn't exist
+                try:
+                    with open(SENT_EMAILS_LOG, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            parts = line.strip().split(' | ')
+                            if len(parts) >= 2:
+                                sent_emails.add(parts[1])  # email address
+                    print(f"✓ Loaded {len(sent_emails)} sent emails from log file")
+                except FileNotFoundError:
+                    print("✓ No sent emails log found, starting fresh")
+        except Exception as e:
+            print(f"⚠️ Error loading sent emails: {e}")
         return sent_emails
+    
+    def save_sent_emails(self):
+        """Save sent emails to JSON file for persistence"""
+        try:
+            json_file = "sent_emails.json"
+            data = {
+                'sent_emails': list(self.sent_emails),
+                'last_updated': datetime.now().isoformat()
+            }
+            with open(json_file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2)
+        except Exception as e:
+            print(f"⚠️ Error saving sent emails: {e}")
     
     def load_stores(self):
         """Load and filter stores from CSV file"""
         try:
             df = pd.read_csv(self.csv_file_path)
+            print(f"✓ Loaded {len(df)} total stores from CSV")
             
             # Determine which email column to use
             email_col = 'cleaned_email' if 'cleaned_email' in df.columns else 'email'
+            print(f"✓ Using email column: {email_col}")
             
             # Filter out stores that have already been emailed
+            before_filter = len(df)
             df = df[~df[email_col].isin(self.sent_emails)]
+            after_filter = len(df)
+            print(f"✓ Filtered out {before_filter - after_filter} already-sent emails")
             
             # Filter out stores with invalid emails
+            before_invalid = len(df)
             df = df[df[email_col].notna() & (df[email_col] != '')]
+            after_invalid = len(df)
+            print(f"✓ Filtered out {before_invalid - after_invalid} invalid emails")
             
             # Filter out stores with obvious invalid emails
+            before_obvious = len(df)
             df = df[~df[email_col].str.contains('filler@godaddy.com', na=False)]
             df = df[~df[email_col].str.contains('example.com', na=False)]
+            after_obvious = len(df)
+            print(f"✓ Filtered out {before_obvious - after_obvious} obvious invalid emails")
             
             # If using original email column, clean up email addresses (remove extra text)
             if email_col == 'email':
                 df[email_col] = df[email_col].str.extract(r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})')
             
             # Remove rows where email is missing after processing
+            before_final = len(df)
             df = df[df[email_col].notna()]
+            after_final = len(df)
+            print(f"✓ Final filtering: {before_final - after_final} emails removed")
             
             # Ensure there's always an 'email' column for the rest of the system
             if email_col == 'cleaned_email':
                 df['email'] = df['cleaned_email']
             
+            print(f"✓ Final result: {len(df)} stores ready for emailing")
             return df.to_dict('records')
             
         except Exception as e:
@@ -97,6 +140,7 @@ class StoreProcessor:
     def mark_email_sent(self, email):
         """Mark an email as sent to avoid duplicates"""
         self.sent_emails.add(email)
+        self.save_sent_emails()  # Save immediately after marking
     
     def get_stats(self):
         """Get statistics about the email campaign"""
