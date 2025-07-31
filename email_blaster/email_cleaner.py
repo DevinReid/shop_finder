@@ -9,7 +9,6 @@ from openai import OpenAI
 import os
 import time
 from dotenv import load_dotenv
-from pathlib import Path
 
 # Load environment variables
 load_dotenv()
@@ -134,7 +133,7 @@ def main():
         return
     
     # Show sample of what we're processing
-    print(f"\nSample data (first 3 rows):")
+    print("\nSample data (first 3 rows):")
     for i, row in enumerate(rows[:3]):
         print(f"  {i+1}. {row.get('name', 'Unknown')}: {row.get('email', 'No email')}")
     

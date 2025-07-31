@@ -6,10 +6,9 @@ Sends personalized emails to potential wholesale clients based on store type
 
 import time
 import sys
-from datetime import datetime
 from zoho_mailer import ZohoMailer
 from store_processor import StoreProcessor
-from config import *
+from config import DAILY_EMAIL_LIMIT
 
 class EmailBlaster:
     def __init__(self):
@@ -66,7 +65,7 @@ class EmailBlaster:
             email_data = self.processor.format_email(store)
             
             if not email_data['to_email']:
-                print(f"   ✗ No valid email address")
+                print("   ✗ No valid email address")
                 failed_count += 1
                 continue
             
@@ -92,7 +91,7 @@ class EmailBlaster:
                 time.sleep(2)
         
         print("\n" + "=" * 50)
-        print(f"Email Campaign Complete!")
+        print("Email Campaign Complete!")
         print(f"Successfully sent: {success_count}")
         print(f"Failed: {failed_count}")
         print(f"Total processed: {len(stores)}")
